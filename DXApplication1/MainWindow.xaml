@@ -21,11 +21,10 @@
 							 Loaded="GridControl_Loaded"
 							 >
 				<dxg:GridControl.View>
-					<dxg:TableView ShowGroupedColumns="False" ShowGroupPanel="False" ShowCheckBoxSelectorColumn="True" AllowGrouping="False"/>
+					<dxg:TableView ShowGroupedColumns="False" ShowIndicator="False" ShowGroupPanel="False" ShowCheckBoxSelectorColumn="True" AllowGrouping="False" NavigationStyle="Row" AllowColumnMoving="False" AllowEditing="False" BestFitModeOnSourceChange="AllRows"/>
 				</dxg:GridControl.View>
-				<dxg:GridColumn FieldName="MemberId" />
 				<dxg:GridColumn FieldName="TeamName" Header="Team" GroupIndex="0"/>
-				<dxg:GridColumn FieldName="MemberName" Header="Mitarbeiter"/>
+				<dxg:GridColumn FieldName="MemberName" Header="Mitarbeiter" BestFitMode="AllRows"/>
 			</dxg:GridControl>
 		</DataTemplate>
 	</dx:ThemedWindow.Resources>
@@ -41,6 +40,20 @@
 			<dxg:GridColumn FieldName="Id" IsSmart="True"/>
 			<dxg:GridColumn FieldName="AssignedTo.Id" Header="Zugewiesen an" Visible="False"/>
 			<dxg:GridColumn FieldName="AssignedTo.Name" Header="Zugewiesen an" FilterPopupMode="Custom" CustomColumnFilterPopupTemplate="{StaticResource employeeFilter}"/>
+		</dxg:GridControl>
+		<dxg:GridControl Grid.Row="1" MaxHeight="400" Visibility="Hidden"
+							 ItemsSource="{x:Static local:Teams.AllTeamMembers}"
+							 SelectionMode="MultipleRow"
+							 AutoExpandAllGroups="True"
+							 AllowRecursiveSelectionForCollapsedGroups="True"
+							 SelectionChanged="GridControl_SelectionChanged"
+							 Loaded="GridControl_Loaded"
+							 >
+			<dxg:GridControl.View>
+				<dxg:TableView ShowGroupedColumns="False" ShowIndicator="False" ShowGroupPanel="False" ShowCheckBoxSelectorColumn="True" AllowGrouping="False" NavigationStyle="Row" AllowColumnMoving="False" AllowEditing="False"  />
+			</dxg:GridControl.View>
+			<dxg:GridColumn FieldName="TeamName" Header="Team" GroupIndex="0"/>
+			<dxg:GridColumn FieldName="MemberName" Header="Mitarbeiter"/>
 		</dxg:GridControl>
 	</Grid>
 </dx:ThemedWindow>
