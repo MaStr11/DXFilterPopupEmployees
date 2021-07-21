@@ -55,6 +55,7 @@
     </ApplicationDefinition>
     <Compile Include="Employee.cs" />
     <Compile Include="Order.cs" />
+    <Compile Include="SelectedItemsToCriteriaConverter.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">

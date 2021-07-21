@@ -12,13 +12,21 @@
 	</dx:ThemedWindow.DataContext>
 	<dx:ThemedWindow.Resources>
 		<DataTemplate x:Key="employeeFilter">
-			<StackPanel>
-				<dxg:GridControl ItemsSource="{x:Static local:Teams.AllTeams}">
-					<dxg:GridControl.View>
-						<dxg:TreeListView/>
-					</dxg:GridControl.View>
-				</dxg:GridControl>
-			</StackPanel>
+			<dxg:GridControl MaxHeight="400"
+							 ItemsSource="{x:Static local:Teams.AllTeamMembers}"
+							 SelectionMode="MultipleRow"
+							 AutoExpandAllGroups="True"
+							 AllowRecursiveSelectionForCollapsedGroups="True"
+							 SelectionChanged="GridControl_SelectionChanged"
+							 Loaded="GridControl_Loaded"
+							 >
+				<dxg:GridControl.View>
+					<dxg:TableView ShowGroupedColumns="False" ShowGroupPanel="False" ShowCheckBoxSelectorColumn="True" AllowGrouping="False"/>
+				</dxg:GridControl.View>
+				<dxg:GridColumn FieldName="MemberId" />
+				<dxg:GridColumn FieldName="TeamName" Header="Team" GroupIndex="0"/>
+				<dxg:GridColumn FieldName="MemberName" Header="Mitarbeiter"/>
+			</dxg:GridControl>
 		</DataTemplate>
 	</dx:ThemedWindow.Resources>
 	<Grid>
@@ -31,26 +39,8 @@
 				<dxg:TableView/>
 			</dxg:GridControl.View>
 			<dxg:GridColumn FieldName="Id" IsSmart="True"/>
+			<dxg:GridColumn FieldName="AssignedTo.Id" Header="Zugewiesen an" Visible="False"/>
 			<dxg:GridColumn FieldName="AssignedTo.Name" Header="Zugewiesen an" FilterPopupMode="Custom" CustomColumnFilterPopupTemplate="{StaticResource employeeFilter}"/>
-
 		</dxg:GridControl>
-		<dxg:TreeListControl Grid.Row="1" ItemsSource="{x:Static local:Teams.AllTeams}" SelectionMode="MultipleRow">
-			<dxg:TreeListControl.Resources>
-				<HierarchicalDataTemplate DataType="{x:Type local:Team}" ItemsSource="{Binding Path=Members}">
-					<ContentPresenter x:Name="defaultRowPresenter" Content="{Binding}" ContentTemplate="{Binding View.DefaultDataRowTemplate}" />
-				</HierarchicalDataTemplate>
-				<DataTemplate DataType="{x:Type local:Employee}">
-					<dx:MeasurePixelSnapper>
-						<ContentPresenter x:Name="defaultRowPresenter" Content="{Binding}" ContentTemplate="{Binding View.DefaultDataRowTemplate}" />
-					</dx:MeasurePixelSnapper>
-				</DataTemplate>
-			</dxg:TreeListControl.Resources>
-			<dxg:TreeListControl.View>
-				<dxg:TreeListView AllowRecursiveNodeChecking="True" ShowCheckboxes="True" TreeDerivationMode="HierarchicalDataTemplate"/>
-			</dxg:TreeListControl.View>
-			<dxg:TreeListColumn FieldName="Id" IsSmart="True"/>
-			<dxg:TreeListColumn FieldName="Name" IsSmart="True"/>
-		</dxg:TreeListControl>
-
 	</Grid>
 </dx:ThemedWindow>
