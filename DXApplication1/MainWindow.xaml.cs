@@ -33,16 +33,9 @@ namespace DXApplication1
             if (presenter != null)
             {
                 var selection = grid.SelectedItems.Cast<TeamMember>().Select(tm => tm.MemberId).Distinct().ToList();
-                if (selection.Count == 0)
-                {
-                    var visitor = new DeleteAssignedToVistor();
-                    var dataControl = presenter.ColumnFilterInfo.Column.View.DataControl;
-                    dataControl.FilterCriteria = visitor.Process(dataControl.FilterCriteria);
-                }
-                else
-                {
-                    presenter.CustomColumnFilter = new InOperator("AssignedTo.Id", selection);
-                }
+                presenter.CustomColumnFilter = selection.Count == 0
+                    ? new UnaryOperator(UnaryOperatorType.Not, new InOperator("AssignedTo.Id", selection))
+                    : (CriteriaOperator)new InOperator("AssignedTo.Id", selection);
             }
         }
 
@@ -80,22 +73,5 @@ namespace DXApplication1
                 }
             }
         }
-    }
-
-    class DeleteAssignedToVistor : DevExpress.Data.Filtering.Helpers.ClientCriteriaVisitorBase
-    {
-        protected override CriteriaOperator Visit(InOperator inOperator)
-        {
-            if (inOperator.LeftOperand is OperandProperty prop && prop.PropertyName == "AssignedTo.Id")
-            {
-                return new ConstantValue(true);
-            }
-            return base.Visit(inOperator);
-        }
-        public new CriteriaOperator Process(CriteriaOperator input)
-        {
-            return base.Process(input);
-        }
-
     }
 }
