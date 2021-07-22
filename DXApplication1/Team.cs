@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace DXApplication1
@@ -13,8 +14,12 @@ namespace DXApplication1
     public class TeamMember
     {
         public int? TeamId { get; set; }
+        
+        [DisplayName("Team")]
         public string TeamName { get; set; }
         public int MemberId { get; set; }
+        
+        [DisplayName("Mitarbeiter")]
         public string MemberName { get; set; }
     }
 
