@@ -15,7 +15,16 @@
 					 SelectionChanged="GridControl_SelectionChanged"
 					 Loaded="GridControl_Loaded">
 		<dxg:GridControl.View>
-			<dxg:TableView ShowGroupedColumns="False" ShowIndicator="False" ShowGroupPanel="False" ShowCheckBoxSelectorColumn="True" AllowGrouping="False" NavigationStyle="Row" AllowColumnMoving="False" AllowEditing="False" BestFitModeOnSourceChange="AllRows"/>
+			<dxg:TableView ShowGroupedColumns="False" 
+						   ShowIndicator="False" 
+						   ShowGroupPanel="False" 
+						   ShowCheckBoxSelectorColumn="True" 
+						   AllowGrouping="False" 
+						   ShowSearchPanelMode="Always" 
+						   NavigationStyle="Row" 
+						   AllowColumnMoving="False" 
+						   AllowEditing="False" 
+						   BestFitModeOnSourceChange="AllRows"/>
 		</dxg:GridControl.View>
 		<dxg:GridColumn FieldName="{Binding ElementName=root, Path=GroupPropertyName}" GroupIndex="0" IsSmart="True"/>
 		<dxg:GridColumn FieldName="{Binding ElementName=root, Path=FilterPropertyName}" BestFitMode="AllRows" IsSmart="True"/>

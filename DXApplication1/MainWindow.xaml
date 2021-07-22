@@ -28,21 +28,12 @@
 			</dxg:GridControl>
 		</DataTemplate>
 		<DataTemplate x:Key="groupingFilter">
-			<StackPanel>
-				<local:GroupingPopupFilter 
+			<local:GroupingPopupFilter 
 				ItemsSource="{x:Static local:Teams.AllTeamMembers}"
 				GroupPropertyName="TeamName"
 				FilterPropertyName="MemberName"
 				CustomColumnFilterContentPresenter="{Binding RelativeSource={RelativeSource TemplatedParent}}">
-				</local:GroupingPopupFilter>
-
-				<local:GroupingPopupFilter 
-					ItemsSource="{x:Static local:Teams.AllTeamMembers}"
-					GroupPropertyName="TeamName"
-					FilterPropertyName="MemberName"
-					CustomColumnFilterContentPresenter="{Binding RelativeSource={RelativeSource TemplatedParent}}">
-				</local:GroupingPopupFilter>
-			</StackPanel>
+			</local:GroupingPopupFilter>
 		</DataTemplate>
 	</dx:ThemedWindow.Resources>
 	<Grid>
@@ -59,7 +50,7 @@
 			<dxg:GridColumn FieldName="AssignedTo.Name" Header="Zugewiesen an" FilterPopupMode="Custom" CustomColumnFilterPopupTemplate="{StaticResource employeeFilter}"/>
 			<dxg:GridColumn FieldName="AssignedTo.Name" Header="Zugewiesen an 2" FilterPopupMode="Custom" CustomColumnFilterPopupTemplate="{StaticResource groupingFilter}"/>
 		</dxg:GridControl>
-		<dxg:GridControl Grid.Row="1" MaxHeight="400" Visibility="Hidden"
+		<dxg:GridControl Grid.Row="1" MaxHeight="400" Visibility="Visible"
 							 ItemsSource="{x:Static local:Teams.AllTeamMembers}"
 							 SelectionMode="MultipleRow"
 							 AutoExpandAllGroups="True"
@@ -68,7 +59,7 @@
 							 Loaded="GridControl_Loaded"
 							 >
 			<dxg:GridControl.View>
-				<dxg:TableView ShowGroupedColumns="False" ShowIndicator="False" ShowGroupPanel="False" ShowCheckBoxSelectorColumn="True" AllowGrouping="False" NavigationStyle="Row" AllowColumnMoving="False" AllowEditing="False"  />
+				<dxg:TableView ShowGroupedColumns="False" ShowIndicator="False" ShowGroupPanel="False" ShowCheckBoxSelectorColumn="True" AllowGrouping="False" NavigationStyle="Row" AllowColumnMoving="False" AllowEditing="False" />
 			</dxg:GridControl.View>
 			<dxg:GridColumn FieldName="TeamName" Header="Team" GroupIndex="0"/>
 			<dxg:GridColumn FieldName="MemberName" Header="Mitarbeiter"/>
