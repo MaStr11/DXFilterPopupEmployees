@@ -59,7 +59,13 @@
 							 Loaded="GridControl_Loaded"
 							 >
 			<dxg:GridControl.View>
-				<dxg:TableView ShowGroupedColumns="False" ShowIndicator="False" ShowGroupPanel="False" ShowCheckBoxSelectorColumn="True" AllowGrouping="False" NavigationStyle="Row" AllowColumnMoving="False" AllowEditing="False" />
+				<dxg:TableView ShowGroupedColumns="False" ShowIndicator="False" ShowGroupPanel="False" ShowCheckBoxSelectorColumn="True" AllowGrouping="False" NavigationStyle="Row" AllowColumnMoving="False" AllowEditing="False" ShowHorizontalLines="False" ShowVerticalLines="False">
+					<dxg:TableView.GroupValueTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding Value}" Margin="10,0,0,0"/>
+						</DataTemplate>
+					</dxg:TableView.GroupValueTemplate>
+				</dxg:TableView>
 			</dxg:GridControl.View>
 			<dxg:GridColumn FieldName="TeamName" Header="Team" GroupIndex="0"/>
 			<dxg:GridColumn FieldName="MemberName" Header="Mitarbeiter"/>
