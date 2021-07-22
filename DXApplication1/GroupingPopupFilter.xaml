@@ -13,20 +13,28 @@
 					 AutoExpandAllGroups="True"
 					 AllowRecursiveSelectionForCollapsedGroups="True"
 					 SelectionChanged="GridControl_SelectionChanged"
-					 Loaded="GridControl_Loaded">
+					 Loaded="GridControl_Loaded" >
 		<dxg:GridControl.View>
 			<dxg:TableView ShowGroupedColumns="False" 
 						   ShowIndicator="False" 
 						   ShowGroupPanel="False" 
 						   ShowCheckBoxSelectorColumn="True" 
+						   ShowHorizontalLines="False"
+						   ShowVerticalLines="False"
 						   AllowGrouping="False" 
 						   ShowSearchPanelMode="Always" 
 						   NavigationStyle="Row" 
 						   AllowColumnMoving="False" 
 						   AllowEditing="False" 
-						   BestFitModeOnSourceChange="AllRows"/>
+						   BestFitModeOnSourceChange="AllRows">
+				<dxg:TableView.GroupValueTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Value}" Margin="10,0,0,0" />
+					</DataTemplate>
+				</dxg:TableView.GroupValueTemplate>
+			</dxg:TableView>
 		</dxg:GridControl.View>
-		<dxg:GridColumn FieldName="{Binding ElementName=root, Path=GroupPropertyName}" GroupIndex="0" IsSmart="True"/>
-		<dxg:GridColumn FieldName="{Binding ElementName=root, Path=FilterPropertyName}" BestFitMode="AllRows" IsSmart="True"/>
+		<dxg:GridColumn FieldName="{Binding ElementName=root, Path=GroupPropertyName}" GroupIndex="0" IsSmart="True" />
+		<dxg:GridColumn FieldName="{Binding ElementName=root, Path=FilterPropertyName}" BestFitMode="AllRows" IsSmart="True" />
 	</dxg:GridControl>
 </UserControl>
