@@ -1,74 +1,109 @@
-﻿<dx:ThemedWindow 
-    x:Class="DXApplication1.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-	xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-	xmlns:local="clr-namespace:DXApplication1"
-	Title="MainWindow" Height="800" Width="1000">
-	<dx:ThemedWindow.DataContext>
-		<local:ViewModel/>
-	</dx:ThemedWindow.DataContext>
-	<dx:ThemedWindow.Resources>
-		<DataTemplate x:Key="employeeFilter">
-			<dxg:GridControl MaxHeight="400"
-							 ItemsSource="{x:Static local:Teams.AllTeamMembers}"
-							 SelectionMode="MultipleRow"
-							 AutoExpandAllGroups="True"
-							 AllowRecursiveSelectionForCollapsedGroups="True"
-							 SelectionChanged="GridControl_SelectionChanged"
-							 Loaded="GridControl_Loaded"
-							 >
-				<dxg:GridControl.View>
-					<dxg:TableView ShowGroupedColumns="False" ShowIndicator="False" ShowGroupPanel="False" ShowCheckBoxSelectorColumn="True" AllowGrouping="False" NavigationStyle="Row" AllowColumnMoving="False" AllowEditing="False" BestFitModeOnSourceChange="AllRows"/>
-				</dxg:GridControl.View>
-				<dxg:GridColumn FieldName="TeamName" Header="Team" GroupIndex="0"/>
-				<dxg:GridColumn FieldName="MemberName" Header="Mitarbeiter" BestFitMode="AllRows"/>
-			</dxg:GridControl>
-		</DataTemplate>
-		<DataTemplate x:Key="groupingFilter">
-			<local:GroupingPopupFilter 
-				ItemsSource="{x:Static local:Teams.AllTeamMembers}"
-				GroupPropertyName="TeamName"
-				FilterPropertyName="MemberName"
-				CustomColumnFilterContentPresenter="{Binding RelativeSource={RelativeSource TemplatedParent}}">
-			</local:GroupingPopupFilter>
-		</DataTemplate>
-	</dx:ThemedWindow.Resources>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
-		<dxg:GridControl Grid.Row="0" ItemsSource="{Binding Path=OrderItems}">
-			<dxg:GridControl.View>
-				<dxg:TableView/>
-			</dxg:GridControl.View>
-			<dxg:GridColumn FieldName="Id" IsSmart="True"/>
-			<dxg:GridColumn FieldName="AssignedTo.Id" Header="Zugewiesen an" Visible="False"/>
-			<dxg:GridColumn FieldName="AssignedTo.Name" Header="Zugewiesen an" FilterPopupMode="Custom" CustomColumnFilterPopupTemplate="{StaticResource employeeFilter}"/>
-			<dxg:GridColumn FieldName="AssignedTo.Name" Header="Zugewiesen an 2" FilterPopupMode="Custom" CustomColumnFilterPopupTemplate="{StaticResource groupingFilter}"/>
-		</dxg:GridControl>
-		<dxg:GridControl Grid.Row="1" MaxHeight="400" Visibility="Visible"
-							 ItemsSource="{x:Static local:Teams.AllTeamMembers}"
-							 SelectionMode="MultipleRow"
-							 AutoExpandAllGroups="True"
-							 AllowRecursiveSelectionForCollapsedGroups="True"
-							 SelectionChanged="GridControl_SelectionChanged"
-							 Loaded="GridControl_Loaded"
-							 >
-			<dxg:GridControl.View>
-				<dxg:TableView ShowGroupedColumns="False" ShowIndicator="False" ShowGroupPanel="False" ShowCheckBoxSelectorColumn="True" AllowGrouping="False" NavigationStyle="Row" AllowColumnMoving="False" AllowEditing="False" ShowHorizontalLines="False" ShowVerticalLines="False">
-					<dxg:TableView.GroupValueTemplate>
-						<DataTemplate>
-							<TextBlock Text="{Binding Value}" Margin="10,0,0,0"/>
-						</DataTemplate>
-					</dxg:TableView.GroupValueTemplate>
-				</dxg:TableView>
-			</dxg:GridControl.View>
-			<dxg:GridColumn FieldName="TeamName" Header="Team" GroupIndex="0"/>
-			<dxg:GridColumn FieldName="MemberName" Header="Mitarbeiter"/>
-		</dxg:GridControl>
-	</Grid>
+﻿<dx:ThemedWindow x:Class="DXApplication1.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                 xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                 xmlns:local="clr-namespace:DXApplication1"
+                 Title="MainWindow"
+                 Height="800"
+                 Width="1000">
+    <dx:ThemedWindow.DataContext>
+        <local:ViewModel />
+    </dx:ThemedWindow.DataContext>
+    <dx:ThemedWindow.Resources>
+        <DataTemplate x:Key="employeeFilter">
+            <dxg:GridControl MaxHeight="400"
+                             ItemsSource="{x:Static local:Teams.AllTeamMembers}"
+                             SelectionMode="MultipleRow"
+                             AutoExpandAllGroups="True"
+                             AllowRecursiveSelectionForCollapsedGroups="True"
+                             SelectionChanged="GridControl_SelectionChanged"
+                             Loaded="GridControl_Loaded">
+                <dxg:GridControl.View>
+                    <dxg:TableView ShowGroupedColumns="False"
+                                   ShowIndicator="False"
+                                   ShowGroupPanel="False"
+                                   ShowCheckBoxSelectorColumn="True"
+                                   AllowGrouping="False"
+                                   NavigationStyle="Row"
+                                   AllowColumnMoving="False"
+                                   AllowEditing="False"
+                                   BestFitModeOnSourceChange="AllRows" />
+                </dxg:GridControl.View>
+                <dxg:GridColumn FieldName="TeamName"
+                                Header="Team"
+                                GroupIndex="0" />
+                <dxg:GridColumn FieldName="MemberName"
+                                Header="Mitarbeiter"
+                                BestFitMode="AllRows" />
+            </dxg:GridControl>
+        </DataTemplate>
+        <DataTemplate x:Key="groupingFilter">
+            <local:GroupingPopupFilter ItemsSource="{x:Static local:Teams.AllTeamMembers}"
+                                       GroupPropertyName="TeamName"
+                                       FilterPropertyName="MemberName"
+                                       CustomColumnFilterContentPresenter="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+            </local:GroupingPopupFilter>
+        </DataTemplate>
+    </dx:ThemedWindow.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <dxg:GridControl Grid.Row="0"
+                         ItemsSource="{Binding Path=OrderItems}">
+            <dxg:GridControl.View>
+                <dxg:TableView />
+            </dxg:GridControl.View>
+            <dxg:GridColumn FieldName="Id"
+                            IsSmart="True" />
+            <dxg:GridColumn FieldName="AssignedTo.Id"
+                            Header="Zugewiesen an"
+                            Visible="False" />
+            <dxg:GridColumn FieldName="AssignedTo.Name"
+                            Header="Zugewiesen an"
+                            FilterPopupMode="Custom"
+                            CustomColumnFilterPopupTemplate="{StaticResource employeeFilter}" />
+            <dxg:GridColumn FieldName="AssignedTo.Name"
+                            Header="Zugewiesen an 2"
+                            FilterPopupMode="Custom"
+                            CustomColumnFilterPopupTemplate="{StaticResource groupingFilter}" />
+        </dxg:GridControl>
+        <dxg:GridControl Grid.Row="1"
+                         MaxHeight="400"
+                         Visibility="Visible"
+                         ItemsSource="{x:Static local:Teams.AllTeamMembers}"
+                         SelectionMode="MultipleRow"
+                         AutoExpandAllGroups="True"
+                         AllowRecursiveSelectionForCollapsedGroups="True"
+                         SelectionChanged="GridControl_SelectionChanged"
+                         Loaded="GridControl_Loaded">
+            <dxg:GridControl.View>
+                <dxg:TableView ShowGroupedColumns="False"
+                               ShowIndicator="False"
+                               ShowGroupPanel="False"
+                               ShowCheckBoxSelectorColumn="True"
+                               AllowGrouping="False"
+                               NavigationStyle="Row"
+                               AllowColumnMoving="False"
+                               AllowEditing="False"
+                               ShowHorizontalLines="False"
+                               ShowVerticalLines="False">
+                    <dxg:TableView.GroupValueTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Value}"
+                                       Margin="10,0,0,0" />
+                        </DataTemplate>
+                    </dxg:TableView.GroupValueTemplate>
+                </dxg:TableView>
+            </dxg:GridControl.View>
+            <dxg:GridColumn FieldName="TeamName"
+                            Header="Team"
+                            GroupIndex="0" />
+            <dxg:GridColumn FieldName="MemberName"
+                            Header="Mitarbeiter" />
+        </dxg:GridControl>
+    </Grid>
 </dx:ThemedWindow>
