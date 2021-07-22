@@ -74,7 +74,7 @@ namespace DXApplication1
                 // The filtered grid has a CustomColumnFilter set, that was previously set by this filter pop-up.
                 // We need to restore the selection based on the criteria.
                 // This is the reverse operation to what is done in GridControl_SelectionChanged.
-                var filterValues = inOperator.Operands.OfType<OperandValue>().Select(c => c.Value).Distinct().ToHashSet();
+                var filterValues = inOperator.Operands.OfType<OperandValue>().Select(c => c.Value).ToHashSet();
                 if (filterValues.Count > 0)
                 {
                     var grid = (GridControl)sender;
