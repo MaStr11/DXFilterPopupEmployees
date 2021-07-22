@@ -30,7 +30,7 @@
                            BestFitModeOnSourceChange="AllRows">
                 <dxg:TableView.GroupValueTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Value}"
+                        <TextBlock Text="{DXBinding 'string.IsNullOrWhiteSpace(Value) ? `(ohne)` : Value'}"
                                    Margin="10,0,0,0" />
                     </DataTemplate>
                 </dxg:TableView.GroupValueTemplate>

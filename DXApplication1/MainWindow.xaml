@@ -93,7 +93,7 @@
                                ShowVerticalLines="False">
                     <dxg:TableView.GroupValueTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Value}"
+                            <TextBlock Text="{DXBinding 'string.IsNullOrWhiteSpace(Value) ? `(leer)` : Value'}"
                                        Margin="10,0,0,0" />
                         </DataTemplate>
                     </dxg:TableView.GroupValueTemplate>
