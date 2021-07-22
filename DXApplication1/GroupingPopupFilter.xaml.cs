@@ -17,9 +17,6 @@ using System.Windows.Shapes;
 
 namespace DXApplication1
 {
-    /// <summary>
-    /// Interaktionslogik für GroupingPopupFilter.xaml
-    /// </summary>
     public partial class GroupingPopupFilter : UserControl
     {
         public GroupingPopupFilter()
@@ -59,6 +56,8 @@ namespace DXApplication1
 
         private void GridControl_SelectionChanged(object sender, GridSelectionChangedEventArgs e)
         {
+            // Apply the selection to the CustomColumnFilter of the grid being filtered.
+            // this is done by "converting" the selection into a CriteriaOperator.
             var grid = (GridControl)sender;
             var col = grid.Columns[FilterPropertyName];
             var selectedRows = grid.GetSelectedRowHandles();
@@ -72,16 +71,23 @@ namespace DXApplication1
         {
             if (CustomColumnFilterContentPresenter.CustomColumnFilter is InOperator inOperator)
             {
-                var filterValues = inOperator.Operands.OfType<OperandValue>().Select(c => c.Value).Distinct().ToList();
+                // The filtered grid has a CustomColumnFilter set, that was previously set by this filter pop-up.
+                // We need to restore the selection based on the criteria.
+                // This is the reverse operation to what is done in GridControl_SelectionChanged.
+                var filterValues = inOperator.Operands.OfType<OperandValue>().Select(c => c.Value).Distinct().ToHashSet();
                 if (filterValues.Count > 0)
                 {
                     var grid = (GridControl)sender;
                     var column = grid.Columns[FilterPropertyName];
+                    // Iterate all rows and select rows which value, is one of the "in" operator operands
                     for (int i = 0; i < grid.VisibleRowCount; i++)
                     {
                         var rowHandle = grid.GetRowHandleByVisibleIndex(i);
                         if (grid.IsGroupRowHandle(rowHandle))
                         {
+                            // Group rows value is the value of the first item in the group, which can cause bugs.
+                            // There is no need to set the group selection, because
+                            // the grid updates the group selector checkbox accordingly.
                             continue;
                         }
                         var rowValue = grid.GetCellValue(rowHandle, column);
