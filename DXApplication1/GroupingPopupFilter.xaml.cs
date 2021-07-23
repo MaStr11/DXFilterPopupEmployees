@@ -22,7 +22,6 @@ namespace DXApplication1
         public GroupingPopupFilter()
         {
             InitializeComponent();
-            var gc = new GridControl();
         }
 
         public static readonly DependencyProperty ItemsSourceProperty = DataControlBase.ItemsSourceProperty.AddOwner(typeof(GroupingPopupFilter));
@@ -62,9 +61,23 @@ namespace DXApplication1
             var col = grid.Columns[FilterPropertyName];
             var selectedRows = grid.GetSelectedRowHandles();
             var selectedValues = selectedRows.Select(r => grid.GetCellValue(r, col)).Distinct().ToList();
+            var sortedSelectedValues = SortListIfPossible(selectedValues);
             CustomColumnFilterContentPresenter.CustomColumnFilter = selectedValues.Count == 0
                 ? null
-                : new InOperator(CustomColumnFilterContentPresenter.ColumnFilterInfo.Column.FieldName, selectedValues);
+                : new InOperator(CustomColumnFilterContentPresenter.ColumnFilterInfo.Column.FieldName, sortedSelectedValues);
+        }
+
+        private IList<object> SortListIfPossible(IList<object> selectedValues)
+        {
+            if (selectedValues.Count == 0)
+            {
+                return selectedValues;
+            }
+
+            var firstEntry = selectedValues[0];
+            return firstEntry is IComparable
+                ? selectedValues.OrderBy(i => i).ToList()
+                : selectedValues;
         }
 
         private void GridControl_Loaded(object sender, RoutedEventArgs e)
@@ -87,7 +100,8 @@ namespace DXApplication1
                         {
                             // Group rows value is the value of the first item in the group, which can cause bugs.
                             // There is no need to set the group selection, because
-                            // the grid updates the group selector checkbox accordingly.
+                            // the grid updates the group selector checkbox according to the elected group items
+                            // automatically.
                             continue;
                         }
                         var rowValue = grid.GetCellValue(rowHandle, column);

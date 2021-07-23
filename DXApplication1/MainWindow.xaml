@@ -12,33 +12,6 @@
         <local:ViewModel />
     </dx:ThemedWindow.DataContext>
     <dx:ThemedWindow.Resources>
-        <DataTemplate x:Key="employeeFilter">
-            <dxg:GridControl MaxHeight="400"
-                             ItemsSource="{x:Static local:Teams.AllTeamMembers}"
-                             SelectionMode="MultipleRow"
-                             AutoExpandAllGroups="True"
-                             AllowRecursiveSelectionForCollapsedGroups="True"
-                             SelectionChanged="GridControl_SelectionChanged"
-                             Loaded="GridControl_Loaded">
-                <dxg:GridControl.View>
-                    <dxg:TableView ShowGroupedColumns="False"
-                                   ShowIndicator="False"
-                                   ShowGroupPanel="False"
-                                   ShowCheckBoxSelectorColumn="True"
-                                   AllowGrouping="False"
-                                   NavigationStyle="Row"
-                                   AllowColumnMoving="False"
-                                   AllowEditing="False"
-                                   BestFitModeOnSourceChange="AllRows" />
-                </dxg:GridControl.View>
-                <dxg:GridColumn FieldName="TeamName"
-                                Header="Team"
-                                GroupIndex="0" />
-                <dxg:GridColumn FieldName="MemberName"
-                                Header="Mitarbeiter"
-                                BestFitMode="AllRows" />
-            </dxg:GridControl>
-        </DataTemplate>
         <DataTemplate x:Key="groupingFilter">
             <local:GroupingPopupFilter ItemsSource="{x:Static local:Teams.AllTeamMembers}"
                                        GroupPropertyName="TeamName"
@@ -59,21 +32,15 @@
             </dxg:GridControl.View>
             <dxg:GridColumn FieldName="Id"
                             IsSmart="True" />
-            <dxg:GridColumn FieldName="AssignedTo.Id"
-                            Header="Zugewiesen an"
-                            Visible="False" />
             <dxg:GridColumn FieldName="AssignedTo.Name"
-                            Header="Zugewiesen an"
-                            FilterPopupMode="Custom"
-                            CustomColumnFilterPopupTemplate="{StaticResource employeeFilter}" />
-            <dxg:GridColumn FieldName="AssignedTo.Name"
-                            Header="Zugewiesen an 2"
+                            Header="Assigned to"
                             FilterPopupMode="Custom"
                             CustomColumnFilterPopupTemplate="{StaticResource groupingFilter}" />
         </dxg:GridControl>
+        <!-- GridControl for designing of the GridControl in "GroupingPopupFilter" -->
         <dxg:GridControl Grid.Row="1"
                          MaxHeight="400"
-                         Visibility="Visible"
+                         Visibility="Hidden"
                          ItemsSource="{x:Static local:Teams.AllTeamMembers}"
                          SelectionMode="MultipleRow"
                          AutoExpandAllGroups="True"
@@ -93,7 +60,7 @@
                                ShowVerticalLines="False">
                     <dxg:TableView.GroupValueTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{DXBinding 'string.IsNullOrWhiteSpace(Value) ? `(leer)` : Value'}"
+                            <TextBlock Text="{DXBinding 'string.IsNullOrWhiteSpace(Value) ? `⦰` : Value'}"
                                        Margin="10,0,0,0" />
                         </DataTemplate>
                     </dxg:TableView.GroupValueTemplate>
@@ -103,7 +70,7 @@
                             Header="Team"
                             GroupIndex="0" />
             <dxg:GridColumn FieldName="MemberName"
-                            Header="Mitarbeiter" />
+                            Header="Employee" />
         </dxg:GridControl>
     </Grid>
 </dx:ThemedWindow>

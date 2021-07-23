@@ -16,22 +16,21 @@
                      SelectionChanged="GridControl_SelectionChanged"
                      Loaded="GridControl_Loaded">
         <dxg:GridControl.View>
-            <dxg:TableView ShowGroupedColumns="False"
+            <dxg:TableView AllowGrouping="False"
+                           AllowColumnMoving="False"
+                           AllowEditing="False"
+                           ShowGroupedColumns="False"
                            ShowIndicator="False"
                            ShowGroupPanel="False"
                            ShowCheckBoxSelectorColumn="True"
                            ShowHorizontalLines="False"
                            ShowVerticalLines="False"
-                           AllowGrouping="False"
                            ShowSearchPanelMode="Always"
                            NavigationStyle="Row"
-                           AllowColumnMoving="False"
-                           AllowEditing="False"
                            BestFitModeOnSourceChange="AllRows">
                 <dxg:TableView.GroupValueTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{DXBinding 'string.IsNullOrWhiteSpace(Value) ? `(ohne)` : Value'}"
-                                   Margin="10,0,0,0" />
+                        <TextBlock Text="{Binding Path=Value}" />
                     </DataTemplate>
                 </dxg:TableView.GroupValueTemplate>
             </dxg:TableView>

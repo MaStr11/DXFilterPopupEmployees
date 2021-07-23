@@ -58,7 +58,6 @@
       <DependentUpon>GroupingPopupFilter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Order.cs" />
-    <Compile Include="SelectedItemsToCriteriaConverter.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="ViewModel.cs" />
     <Page Include="GroupingPopupFilter.xaml">
@@ -104,7 +103,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DevExpress.Wpf.Grid.de">
+    <PackageReference Include="DevExpress.Wpf.Grid">
       <Version>21.1.4</Version>
     </PackageReference>
   </ItemGroup>

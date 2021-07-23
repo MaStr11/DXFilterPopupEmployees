@@ -14,12 +14,12 @@ namespace DXApplication1
     public class TeamMember
     {
         public int? TeamId { get; set; }
-        
+
         [DisplayName("Team")]
         public string TeamName { get; set; }
         public int MemberId { get; set; }
-        
-        [DisplayName("Mitarbeiter")]
+
+        [DisplayName("Employee")]
         public string MemberName { get; set; }
     }
 
@@ -32,15 +32,16 @@ namespace DXApplication1
 
         public static IList<Team> AllTeams { get; } = new List<Team> { Team1, Team2, Team3, Team4 };
 
-        private static Lazy<IList<TeamMember>> _AllTeamMembers = new Lazy<IList<TeamMember>>(() => (from e in Employees.AllEmployees
-                                                                                                    from t in e.MemberOf.DefaultIfEmpty()
-                                                                                                    select new TeamMember
-                                                                                                    {
-                                                                                                        MemberId = e.Id,
-                                                                                                        MemberName = e.Name,
-                                                                                                        TeamId = t?.Id,
-                                                                                                        TeamName = t?.Name,
-                                                                                                    }).ToList());
-        public static IList<TeamMember> AllTeamMembers => _AllTeamMembers.Value;
+        private static IList<TeamMember> _AllTeamMembers;
+        public static IList<TeamMember> AllTeamMembers
+            => _AllTeamMembers ?? (_AllTeamMembers = (from e in Employees.AllEmployees
+                                                      from t in e.MemberOf.DefaultIfEmpty()
+                                                      select new TeamMember
+                                                      {
+                                                          MemberId = e.Id,
+                                                          MemberName = e.Name,
+                                                          TeamId = t?.Id,
+                                                          TeamName = t?.Name,
+                                                      }).ToList());
     }
 }
