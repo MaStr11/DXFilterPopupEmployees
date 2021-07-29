@@ -1,14 +1,19 @@
-﻿using DevExpress.Data.Filtering;
+﻿using DevExpress.Data;
+using DevExpress.Data.Access;
+using DevExpress.Data.Filtering;
+using DevExpress.Data.Filtering.Helpers;
 using DevExpress.Xpf.Grid;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -17,22 +22,68 @@ using System.Windows.Shapes;
 
 namespace DXApplication1
 {
-    public partial class GroupingPopupFilter : UserControl
+    public partial class GroupingPopupFilter : UserControl, INotifyPropertyChanged
     {
+
+        private object _FilteredItemSource;
+
         public GroupingPopupFilter()
         {
             InitializeComponent();
         }
 
-        public static readonly DependencyProperty ItemsSourceProperty = DataControlBase.ItemsSourceProperty.AddOwner(typeof(GroupingPopupFilter));
+        public static readonly DependencyProperty ItemsSourceProperty = DataControlBase.ItemsSourceProperty.AddOwner(typeof(GroupingPopupFilter), new PropertyMetadata(new PropertyChangedCallback(ItemsSourceChanged)));
         public static readonly DependencyProperty CustomColumnFilterContentPresenterProperty = DependencyProperty.Register(nameof(CustomColumnFilterContentPresenter), typeof(CustomColumnFilterContentPresenter), typeof(GroupingPopupFilter));
         public static readonly DependencyProperty FilterPropertyNameProperty = DependencyProperty.Register(nameof(FilterPropertyName), typeof(string), typeof(GroupingPopupFilter), new PropertyMetadata(null));
         public static readonly DependencyProperty GroupPropertyNameProperty = DependencyProperty.Register(nameof(GroupPropertyName), typeof(string), typeof(GroupingPopupFilter), new PropertyMetadata(null));
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private static void ItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((GroupingPopupFilter)d).RefreshItemsSourceView();
+        }
+
+        private void RefreshItemsSourceView()
+        {
+            _FilteredItemSource = FilteredItemSource();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ItemsSourceView)));
+        }
 
         public object ItemsSource
         {
             get => GetValue(ItemsSourceProperty);
             set => SetValue(ItemsSourceProperty, value);
+        }
+
+        public object ItemsSourceView => _FilteredItemSource;
+
+        private object FilteredItemSource()
+        {
+            var iColInfo = CustomColumnFilterContentPresenter?.ColumnFilterInfo?.Column as IDataColumnInfo;
+            var colInfo = iColInfo.Controller.FindColumn(iColInfo.FieldName);
+            var propDesc = colInfo.PropertyDescriptor;
+            var filteredGridItems = new HashSet<object>();
+            foreach (var item in iColInfo.Controller.ListSource)
+            {
+                filteredGridItems.Add(propDesc.GetValue(item));
+            }
+
+            var filteredList = new ArrayList();
+            if (ItemsSource is IEnumerable enumerable)
+            {
+                var propDescFilter = new ComplexPropertyDescriptorReflection(grid, FilterPropertyName);
+                foreach (var o in enumerable)
+                {
+                    var propValue = propDescFilter.GetValue(o);
+                    if (filteredGridItems.Contains(propValue))
+                    {
+                        filteredList.Add(o);
+                    }
+                }
+            }
+
+            return filteredList;
         }
 
         public CustomColumnFilterContentPresenter CustomColumnFilterContentPresenter
@@ -110,6 +161,30 @@ namespace DXApplication1
                             grid.SelectItem(rowHandle);
                         }
                     }
+                }
+            }
+        }
+
+        private void GridControl_ItemsSourceChanged(object sender, ItemsSourceChangedEventArgs e)
+        {
+            var filteredColumn = CustomColumnFilterContentPresenter?.ColumnFilterInfo?.Column as GridColumn;
+            var filteredDataControl = filteredColumn?.View?.DataControl as GridControl;
+            if (filteredDataControl == null)
+            {
+                return;
+            }
+
+            var filterGrid = (GridControl)sender;
+            var filterColumn = filterGrid.Columns[FilterPropertyName];
+            for (int i = 0; i < filterGrid.VisibleRowCount; i++)
+            {
+                var rowHandle = filterGrid.GetRowHandleByVisibleIndex(i);
+                var cellValue = filterGrid.GetCellValue(rowHandle, filterColumn);
+
+                var filteredRowHandle = filteredDataControl.FindRowByValue(filteredColumn, cellValue);
+                if (filteredRowHandle == DataControlBase.InvalidRowHandle)
+                {
+                    ((GridViewBase)filterGrid.View).DeleteRow(filteredRowHandle);
                 }
             }
         }
