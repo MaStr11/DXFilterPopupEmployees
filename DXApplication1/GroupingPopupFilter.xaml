@@ -8,13 +8,15 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              Name="root">
-    <dxg:GridControl MaxHeight="400"
-                     ItemsSource="{Binding Path=ItemsSource, ElementName=root}"
+    <dxg:GridControl Name ="grid"
+                     MaxHeight="400"
+                     ItemsSource="{Binding Path=ItemsSourceView, ElementName=root}"
                      SelectionMode="MultipleRow"
                      AutoExpandAllGroups="True"
                      AllowRecursiveSelectionForCollapsedGroups="True"
                      SelectionChanged="GridControl_SelectionChanged"
-                     Loaded="GridControl_Loaded">
+                     Loaded="GridControl_Loaded"
+                     ItemsSourceChanged="GridControl_ItemsSourceChanged">
         <dxg:GridControl.View>
             <dxg:TableView AllowGrouping="False"
                            AllowColumnMoving="False"
